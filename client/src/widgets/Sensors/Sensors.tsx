@@ -1,3 +1,4 @@
+import { Sensor } from '../Sensor/Sensor';
 import { useSensors } from './useSensors';
 
 export const Sensors = () => {
@@ -5,9 +6,7 @@ export const Sensors = () => {
   return (
     <div>
       {Object.values(sensors).map((sensor) => (
-        <div key={sensor.id}>
-          {sensor.name} - {sensor.value}
-        </div>
+        <Sensor key={sensor.id} {...sensor} />
       ))}
     </div>
   );
