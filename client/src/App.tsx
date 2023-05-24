@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { SensorWebSocketProvider } from '@/providers';
 
 import { Sensors } from '@/widgets';

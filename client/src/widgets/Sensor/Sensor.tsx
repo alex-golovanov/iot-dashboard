@@ -3,8 +3,9 @@ import {
   useSensorWebSocketContext,
   useSensorWebSocketData,
 } from '@/providers';
+
+import { Switch } from '@/components';
 import { DEFAULT_VALUE } from './constants';
-import { useState } from 'react';
 
 export const Sensor: React.FC<Omit<TSensorMessage, 'value'>> = ({
   id,
@@ -16,15 +17,11 @@ export const Sensor: React.FC<Omit<TSensorMessage, 'value'>> = ({
   const { value = DEFAULT_VALUE } =
     useSensorWebSocketData((message) => message.id === id) ?? {};
 
-  const [isConnected, setIsConnected] = useState(connected);
-
-  const handleOnClick = () => {
-    if (isConnected) {
-      setIsConnected(false);
-      socket.send(JSON.stringify({ command: 'disconnect', id }));
-    } else {
-      setIsConnected(true);
+  const handleOnClick = (connect: boolean) => {
+    if (connect) {
       socket.send(JSON.stringify({ command: 'connect', id }));
+    } else {
+      socket.send(JSON.stringify({ command: 'disconnect', id }));
     }
   };
 
@@ -33,7 +30,7 @@ export const Sensor: React.FC<Omit<TSensorMessage, 'value'>> = ({
       <div>
         {id} - {name} - {unit} - {value}
       </div>
-      <button onClick={handleOnClick}>con</button>
+      <Switch onCheckedChange={handleOnClick} defaultChecked={connected} />
     </div>
   );
 };

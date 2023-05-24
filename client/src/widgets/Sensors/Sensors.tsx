@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
-import { Sensor } from '../Sensor/Sensor';
+import { Sensor } from '../Sensor';
 import { useSensors } from './useSensors';
+
+import { Checkbox } from '@/components';
 
 export const Sensors = () => {
   const sensors = useSensors();
@@ -14,13 +16,11 @@ export const Sensors = () => {
 
   return (
     <div>
-      <input
-        type='checkbox'
-        checked={showConnected}
-        onChange={() =>
-          setShowConnected((prevShowConnected) => !prevShowConnected)
-        }
+      <Checkbox
+        label="Only connected"
+        onCheckedChange={(checked) => setShowConnected(Boolean(checked))}
       />
+
       {filteredSensors.map((sensor) => (
         <Sensor key={sensor.id} {...sensor} />
       ))}
