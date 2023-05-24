@@ -1,0 +1,34 @@
+import { createContext, useEffect, useState } from 'react';
+import { SENSOR_WS_ENDPOINT, SENSOR_WS_RECONNECT_TIMEOUT } from './constants';
+
+const initialWebSocket = new WebSocket(SENSOR_WS_ENDPOINT);
+
+export const SensorWebSocketContext = createContext(initialWebSocket);
+
+type TProps = {
+  children?: React.ReactNode;
+};
+
+export const SensorWebSocketProvider: React.FC<TProps> = (props) => {
+  const [webSocket, setWebSocket] = useState<WebSocket>(initialWebSocket);
+
+  useEffect(() => {
+    const onClose = () => {
+      setTimeout(() => {
+        setWebSocket(new WebSocket(SENSOR_WS_ENDPOINT));
+      }, SENSOR_WS_RECONNECT_TIMEOUT);
+    };
+
+    webSocket.addEventListener('close', onClose);
+
+    return () => {
+      webSocket.removeEventListener('close', onClose);
+    };
+  }, [webSocket]);
+
+  return (
+    <SensorWebSocketContext.Provider value={webSocket}>
+      {props.children}
+    </SensorWebSocketContext.Provider>
+  );
+};
