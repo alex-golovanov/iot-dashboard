@@ -3,6 +3,7 @@ import { Sensor } from '../Sensor';
 import { useSensors } from './useSensors';
 
 import { Checkbox } from '@/components';
+import * as styles from './styles.css';
 
 export const Sensors = () => {
   const sensors = useSensors();
@@ -15,15 +16,19 @@ export const Sensors = () => {
   }, [sensors, showConnected]);
 
   return (
-    <div>
-      <Checkbox
-        label="Only connected"
-        onCheckedChange={(checked) => setShowConnected(Boolean(checked))}
-      />
-
-      {filteredSensors.map((sensor) => (
-        <Sensor key={sensor.id} {...sensor} />
-      ))}
+    <div className={styles.root}>
+      <div className={styles.header}>
+        <h1>IoT sensors</h1>
+        <Checkbox
+          label="only connected"
+          onCheckedChange={(checked) => setShowConnected(Boolean(checked))}
+        />
+      </div>
+      <div className={styles.sensors}>
+        {filteredSensors.map((sensor) => (
+          <Sensor key={sensor.id} {...sensor} />
+        ))}
+      </div>
     </div>
   );
 };

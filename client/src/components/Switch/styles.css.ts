@@ -8,41 +8,45 @@ export const root = style({
 });
 
 export const switchRoot = style({
-  width: 42,
-  height: 23,
+  width: 24,
+  height: 14,
   borderRadius: 9999,
-  backgroundColor: theme.colors.palette.indigo8,
+  backgroundColor: theme.colors.palette.indigo7,
   position: 'relative',
   boxShadow: `0 0 2px ${theme.colors.palette.blackA7}`,
   cursor: 'pointer',
 
-  border: `1px solid ${theme.colors.palette.indigo8}`,
-
   ':hover': {
-    backgroundColor: theme.colors.palette.indigo9,
+    backgroundColor: theme.colors.palette.indigo8,
   },
 
   selectors: {
     '&[data-state="checked"]': {
-      backgroundColor: theme.colors.palette.indigo11,
+      backgroundColor: theme.colors.palette.indigo10,
+    },
+
+    '&[data-state="checked"]:hover': {
+      backgroundColor: theme.colors.palette.indigo8,
     },
   },
+
+  transition: 'background-color 250ms',
 });
 
 export const switchThumb = style({
   display: 'block',
-  width: 20,
-  height: 20,
+  width: 12,
+  height: 12,
   backgroundColor: 'white',
   borderRadius: 9999,
   boxShadow: `0 0 2px ${theme.colors.palette.blackA7}`,
   transition: 'transform 100ms',
-  transform: 'translateX(2px)',
+  transform: 'translateX(1px)',
   willChange: 'transform',
 
   selectors: {
     '&[data-state="checked"]': {
-      transform: 'translateX(20px)',
+      transform: 'translateX(11px)',
     },
   },
 });

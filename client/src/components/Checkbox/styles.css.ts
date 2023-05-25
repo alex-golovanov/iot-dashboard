@@ -8,8 +8,8 @@ export const root = style({
 
 export const checkboxRoot = style({
   backgroundColor: 'white',
-  width: 20,
-  height: 20,
+  width: 14,
+  height: 14,
   borderRadius: 4,
   display: 'flex',
   alignItems: 'center',
@@ -24,6 +24,9 @@ export const checkboxRoot = style({
 
 export const checkboxIndicator = style({
   color: theme.colors.palette.indigo11,
+  padding: 0,
+  margin: 0,
+  height: 20,
 });
 
 export const label = style({
