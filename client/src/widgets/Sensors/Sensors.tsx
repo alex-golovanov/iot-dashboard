@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
+
 import { Sensor } from '../Sensor';
 import { useSensors } from './useSensors';
 
@@ -25,9 +27,11 @@ export const Sensors = () => {
         />
       </div>
       <div className={styles.sensors}>
-        {filteredSensors.map((sensor) => (
-          <Sensor key={sensor.id} {...sensor} />
-        ))}
+        <AnimatePresence>
+          {filteredSensors.map((sensor) => (
+            <Sensor key={sensor.id} {...sensor} />
+          ))}
+        </AnimatePresence>
       </div>
     </div>
   );
