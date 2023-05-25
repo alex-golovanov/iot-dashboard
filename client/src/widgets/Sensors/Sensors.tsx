@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
 import { Sensor } from '../Sensor';
@@ -6,10 +6,12 @@ import { useSensors } from './useSensors';
 
 import { Checkbox } from '@/components';
 import * as styles from './styles.css';
+import { useLocalStorage } from '@/hooks';
 
 export const Sensors = () => {
   const sensors = useSensors();
-  const [showConnected, setShowConnected] = useState(false);
+  const [showConnected, setShowConnected] = useLocalStorage('showConnected', false);
+
   const filteredSensors = useMemo(() => {
     const sensorArray = Object.values(sensors);
     return showConnected
@@ -24,6 +26,7 @@ export const Sensors = () => {
         <Checkbox
           label="only connected"
           onCheckedChange={(checked) => setShowConnected(Boolean(checked))}
+          defaultChecked={showConnected}
         />
       </div>
       <div className={styles.sensors}>
