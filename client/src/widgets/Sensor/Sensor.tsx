@@ -1,14 +1,10 @@
 import { motion } from 'framer-motion';
 
-import {
-  TSensorMessage,
-  useSensorWebSocketContext,
-  useSensorWebSocketData,
-} from '@/providers';
+import { TSensorMessage, useSensorWebSocketContext } from '@/providers';
 
 import { Switch } from '@/components';
-import { DEFAULT_VALUE } from './constants';
 import * as styles from './styles.css';
+import { SensorValue } from './SensorValue';
 
 export const Sensor: React.FC<Omit<TSensorMessage, 'value'>> = ({
   id,
@@ -17,8 +13,6 @@ export const Sensor: React.FC<Omit<TSensorMessage, 'value'>> = ({
   connected,
 }) => {
   const socket = useSensorWebSocketContext();
-  const { value = DEFAULT_VALUE } =
-    useSensorWebSocketData((message) => message.id === id) ?? {};
 
   const handleOnClick = (connect: boolean) => {
     if (connect) {
@@ -39,7 +33,7 @@ export const Sensor: React.FC<Omit<TSensorMessage, 'value'>> = ({
         <div className={styles.unit}>{unit}</div>
         <Switch onCheckedChange={handleOnClick} defaultChecked={connected} />
       </div>
-      <div className={styles.main}>{value}</div>
+      <SensorValue id={id} />
       <div className={styles.footer}>{name}</div>
     </motion.div>
   );
