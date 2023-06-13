@@ -67,13 +67,15 @@ wss.on('connection', (client) => {
       connectedSensors = connectedSensors.filter(
         (id) => id !== parsedMessage.id
       );
-      client.send(
-        JSON.stringify(
-          generateSensor(
-            sensors.find((sensor) => sensor.id === parsedMessage.id)
-          )
-        )
+
+      const sensorToDisconnect = sensors.find(
+        (sensor) => sensor.id === parsedMessage.id
       );
+      if (sensorToDisconnect) {
+        wss.clients.forEach((client) => {
+          client.send(JSON.stringify(generateSensor(sensorToDisconnect)));
+        });
+      }
     } else if (
       parsedMessage &&
       parsedMessage.command === 'connect' &&
@@ -88,11 +90,13 @@ wss.on('connection', (client) => {
   });
 
   sensors.forEach((sensor) => {
-    client.send(JSON.stringify(generateSensor(sensor)));
+    wss.clients.forEach((client) => {
+      client.send(JSON.stringify(generateSensor(sensor)));
+    });
   });
 
   if (!initialized) {
-    new Observable((observer) => {
+    new Observable<ISensor>((observer) => {
       const interval = setInterval(() => {
         sensors.forEach((sensor) => {
           observer.next(generateSensor(sensor));
