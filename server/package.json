@@ -1,10 +1,11 @@
 {
-  "name": "fe_assignment",
+  "name": "iot-dashboard-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
+  "type": "module",
   "scripts": {
-    "start": "node index.js"
+    "start": "npx tsx index.ts"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +16,12 @@
   },
   "volta": {
     "node": "20.2.0",
-    "npm": "9.6.7"
+    "npm": "9.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.1",
+    "@types/ws": "^8.5.5",
+    "tsx": "^3.12.7",
+    "typescript": "^5.1.3"
   }
 }
