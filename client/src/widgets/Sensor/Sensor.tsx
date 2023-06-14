@@ -31,7 +31,7 @@ export const Sensor: React.FC<Omit<TSensorMessage, 'value'>> = ({
     >
       <div className={styles.header}>
         <div className={styles.unit}>{unit}</div>
-        <Switch onCheckedChange={handleOnClick} defaultChecked={connected} />
+        <Switch onCheckedChange={handleOnClick} checked={connected} />
       </div>
       <SensorValue id={id} />
       <div className={styles.footer}>{name}</div>
