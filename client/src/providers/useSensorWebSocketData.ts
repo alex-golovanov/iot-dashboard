@@ -1,17 +1,19 @@
 import { useState, useEffect } from 'react';
-import { TSensorMessage, useSensorWebSocketContext } from '.';
+import { useSensorWebSocketContext } from '.';
 
-export const useSensorWebSocketData = (
-  match: (message: TSensorMessage) => boolean
-) => {
+export const useSensorWebSocketData = <T>(match: (message: T | null) => boolean) => {
   const socket = useSensorWebSocketContext();
-  const [data, setData] = useState<TSensorMessage | null>(null);
+  const [data, setData] = useState<T | null>(null);
 
   useEffect(() => {
     const onMessage = (message: MessageEvent) => {
-      const data = JSON.parse(message?.data);
-      if (data && match(data)) {
-        setData(data);
+      try {
+        const data = JSON.parse(message?.data);
+        if (data && match(data)) {
+          setData(data);
+        }
+      } catch (e) {
+        console.error(e);
       }
     };
 

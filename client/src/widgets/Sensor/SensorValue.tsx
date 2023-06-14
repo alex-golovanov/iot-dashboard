@@ -1,10 +1,19 @@
-import { TSensorMessage, useSensorWebSocketData } from '@/providers';
+import { TSensorMessage, isTSensorMessage, useSensorWebSocketData } from '@/providers';
 
 import { DEFAULT_VALUE } from './constants';
 import * as styles from './styles.css';
+import { useRef } from 'react';
 
 export const SensorValue: React.FC<Pick<TSensorMessage, 'id'>> = ({ id }) => {
-  const { value } = useSensorWebSocketData((message) => message.id === id) ?? {};
+  const lastValue = useRef(DEFAULT_VALUE);
+  const { value } =
+    useSensorWebSocketData<TSensorMessage>(
+      (message) => isTSensorMessage(message) && message.id === id,
+    ) ?? {};
 
-  return <div className={styles.main}>{value || DEFAULT_VALUE}</div>;
+  if (value) {
+    lastValue.current = value;
+  }
+
+  return <div className={styles.main}>{value || lastValue.current}</div>;
 };
