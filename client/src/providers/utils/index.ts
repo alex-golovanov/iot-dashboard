@@ -1,0 +1,1 @@
+export { isTSensorMessage } from './isTSensorMessage';

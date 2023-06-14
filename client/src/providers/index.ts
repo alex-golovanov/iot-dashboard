@@ -6,3 +6,4 @@ export {
 export { useSensorWebSocketContext } from './useSensorWebSocketContext';
 export { useSensorWebSocketData } from './useSensorWebSocketData';
 export type { TSensorMessage } from './types';
+export { isTSensorMessage } from './utils';
