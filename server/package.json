@@ -5,12 +5,14 @@
   "main": "index.ts",
   "type": "module",
   "scripts": {
-    "start": "npx tsx index.ts"
+    "start": "npx tsx index.ts",
+    "watch": "npx tsx watch index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "d3-scale": "^4.0.2",
     "rxjs": "^6.5.3",
     "ws": "^7.2.0"
   },
@@ -19,6 +21,7 @@
     "npm": "9.7.1"
   },
   "devDependencies": {
+    "@types/d3-scale": "^4.0.3",
     "@types/node": "^20.3.1",
     "@types/ws": "^8.5.5",
     "tsx": "^3.12.7",
