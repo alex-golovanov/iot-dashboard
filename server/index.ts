@@ -1,6 +1,11 @@
 import { Observable, of } from 'rxjs';
 import { concatMap, delay } from 'rxjs/operators';
 import WebSocket from 'ws';
+import { scaleLinear } from 'd3-scale';
+
+const PORT = 5000;
+const SINE_AMPLITUDE = 10;
+const SINE_FREQUENCY = 0.0001;
 
 interface ISensor {
   id: string;
@@ -8,22 +13,62 @@ interface ISensor {
   connected: boolean;
   unit: string;
   value: string | null;
+  range: [number, number];
 }
 
 const sensors: ISensor[] = [
-  { id: '0', name: 'Temperature', connected: false, unit: '°C', value: '15' },
+  {
+    id: '0',
+    name: 'Temperature',
+    connected: false,
+    unit: '°C',
+    value: '15',
+    range: [-50, 50],
+  },
   {
     id: '1',
     name: 'Pressure',
     connected: false,
     unit: 'kPa',
     value: '101.325',
+    range: [54.02, 101.325],
   },
-  { id: '2', name: 'Humidity', connected: false, unit: '%', value: '45' },
-  { id: '3', name: 'PM2.5', connected: false, unit: 'PM2.5', value: '50' },
-  { id: '4', name: 'PM10', connected: false, unit: 'PM10', value: '43' },
-  { id: '5', name: 'Wind', connected: false, unit: 'm/s', value: '7' },
+  {
+    id: '2',
+    name: 'Humidity',
+    connected: false,
+    unit: '%',
+    value: '45',
+    range: [0, 100],
+  },
+  {
+    id: '3',
+    name: 'PM2.5',
+    connected: false,
+    unit: 'PM2.5',
+    value: '50',
+    range: [0, 300],
+  },
+  {
+    id: '4',
+    name: 'PM10',
+    connected: false,
+    unit: 'PM10',
+    value: '43',
+    range: [0, 300],
+  },
+  {
+    id: '5',
+    name: 'Wind',
+    connected: false,
+    unit: 'm/s',
+    value: '7',
+    range: [0, 33.5],
+  },
 ];
+
+const scale = (amplitude: number, range: [number, number]) =>
+  scaleLinear().domain([-amplitude, amplitude]).range(range);
 
 const generateSensor = (sensor: ISensor): ISensor => {
   return {
@@ -31,8 +76,12 @@ const generateSensor = (sensor: ISensor): ISensor => {
     name: sensor.name,
     connected: isSensorConnected(sensor.id),
     unit: sensor.unit,
+    range: sensor.range,
     value: isSensorConnected(sensor.id)
-      ? (Math.random() + Number(sensor.value)).toFixed(3).toString()
+      ? scale(
+          SINE_AMPLITUDE,
+          sensor.range
+        )(Math.sin(Date.now() * SINE_FREQUENCY) * SINE_AMPLITUDE).toFixed(3)
       : null,
   };
 };
@@ -43,7 +92,6 @@ const isSensorConnected = (id: string): boolean => {
   return connectedSensors.includes(id);
 };
 
-const PORT = 5000;
 let initialized = false;
 
 const wss = new WebSocket.Server({ port: PORT });
