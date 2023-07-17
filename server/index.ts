@@ -14,6 +14,7 @@ interface ISensor {
   unit: string;
   value: string | null;
   range: [number, number];
+  type: 'temperature' | 'pressure' | 'humidity' | 'pm' | 'wind';
 }
 
 const sensors: ISensor[] = [
@@ -24,6 +25,7 @@ const sensors: ISensor[] = [
     unit: '°C',
     value: '15',
     range: [-50, 50],
+    type: 'temperature',
   },
   {
     id: '1',
@@ -32,6 +34,7 @@ const sensors: ISensor[] = [
     unit: 'kPa',
     value: '101.325',
     range: [54.02, 101.325],
+    type: 'pressure',
   },
   {
     id: '2',
@@ -40,6 +43,7 @@ const sensors: ISensor[] = [
     unit: '%',
     value: '45',
     range: [0, 100],
+    type: 'humidity',
   },
   {
     id: '3',
@@ -48,6 +52,7 @@ const sensors: ISensor[] = [
     unit: 'PM2.5',
     value: '50',
     range: [0, 300],
+    type: 'pm',
   },
   {
     id: '4',
@@ -56,6 +61,7 @@ const sensors: ISensor[] = [
     unit: 'PM10',
     value: '43',
     range: [0, 300],
+    type: 'pm',
   },
   {
     id: '5',
@@ -64,19 +70,23 @@ const sensors: ISensor[] = [
     unit: 'm/s',
     value: '7',
     range: [0, 33.5],
+    type: 'wind',
   },
 ];
+
+let connectedSensors: string[] = [];
+
+const isSensorConnected = (id: string): boolean => {
+  return connectedSensors.includes(id);
+};
 
 const scale = (amplitude: number, range: [number, number]) =>
   scaleLinear().domain([-amplitude, amplitude]).range(range);
 
 const generateSensor = (sensor: ISensor): ISensor => {
   return {
-    id: sensor.id,
-    name: sensor.name,
+    ...sensor,
     connected: isSensorConnected(sensor.id),
-    unit: sensor.unit,
-    range: sensor.range,
     value: isSensorConnected(sensor.id)
       ? scale(
           SINE_AMPLITUDE,
@@ -84,12 +94,6 @@ const generateSensor = (sensor: ISensor): ISensor => {
         )(Math.sin(Date.now() * SINE_FREQUENCY) * SINE_AMPLITUDE).toFixed(3)
       : null,
   };
-};
-
-let connectedSensors: string[] = [];
-
-const isSensorConnected = (id: string): boolean => {
-  return connectedSensors.includes(id);
 };
 
 let initialized = false;
