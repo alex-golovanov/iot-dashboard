@@ -11,6 +11,7 @@ export const Sensor: React.FC<Omit<TSensorMessage, 'value'>> = ({
   name,
   unit,
   connected,
+  type,
 }) => {
   const socket = useSensorWebSocketContext();
 
@@ -33,7 +34,7 @@ export const Sensor: React.FC<Omit<TSensorMessage, 'value'>> = ({
         <div className={styles.unit}>{unit}</div>
         <Switch onCheckedChange={handleOnClick} checked={connected} />
       </div>
-      <SensorValue id={id} />
+      <SensorValue id={id} type={type} />
       <div className={styles.footer}>{name}</div>
     </motion.div>
   );

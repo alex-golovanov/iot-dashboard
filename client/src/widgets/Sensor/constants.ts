@@ -22,7 +22,7 @@ import { darken, lighten, mix } from 'color2k';
 
 export const DEFAULT_VALUE = '--';
 export const DEFAULT_DOMAIN: [number, number] = [0, 100];
-export const DEFAULT_RANGE: [number, number] = [0, 10];
+export const GRADIENT_RANGE: [number, number] = [0, 10];
 
 export const GRADIENTS = {
   temperature: [

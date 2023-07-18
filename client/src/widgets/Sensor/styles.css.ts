@@ -1,7 +1,7 @@
 import { style, styleVariants } from '@vanilla-extract/css';
 import { theme } from '@/styles';
 import { getScale, toHex } from 'color2k';
-import { GRADIENTS } from './constants';
+import { GRADIENTS, GRADIENT_RANGE } from './constants';
 
 export const root = style({
   display: 'flex',
@@ -40,11 +40,13 @@ export const value = style({
 });
 
 export const gradientVariants: Record<string, ReturnType<typeof styleVariants>> = {};
+
+const [rangeMin, rangeMax] = GRADIENT_RANGE;
 for (const [type, colors] of Object.entries(GRADIENTS)) {
   const scale = getScale(...colors.map(toHex));
   const tuples: Record<string, [string, { color: string }]> = {};
-  for (let i = 0; i <= 10; i++) {
-    tuples[i] = [value, { color: scale(i / 10) }];
+  for (let i = rangeMin; i <= rangeMax; i++) {
+    tuples[i] = [value, { color: scale(i / rangeMax) }];
   }
 
   gradientVariants[type] = styleVariants(tuples);
