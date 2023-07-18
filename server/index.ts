@@ -83,15 +83,23 @@ const isSensorConnected = (id: string): boolean => {
 const scale = (amplitude: number, range: [number, number]) =>
   scaleLinear().domain([-amplitude, amplitude]).range(range);
 
+const sensorScales = Object.fromEntries(
+  sensors.map(({ type, range }) => {
+    return [
+      type,
+      scaleLinear().domain([-SINE_AMPLITUDE, SINE_AMPLITUDE]).range(range),
+    ];
+  })
+);
+
 const generateSensor = (sensor: ISensor): ISensor => {
   return {
     ...sensor,
     connected: isSensorConnected(sensor.id),
     value: isSensorConnected(sensor.id)
-      ? scale(
-          SINE_AMPLITUDE,
-          sensor.range
-        )(Math.sin(Date.now() * SINE_FREQUENCY) * SINE_AMPLITUDE).toFixed(3)
+      ? sensorScales[sensor.type](
+          Math.sin(Date.now() * SINE_FREQUENCY) * SINE_AMPLITUDE
+        ).toFixed(3)
       : null,
   };
 };
